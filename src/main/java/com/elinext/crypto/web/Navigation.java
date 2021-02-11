@@ -12,6 +12,7 @@ public interface Navigation {
 	String WEB_SOCKET_ALL_PATTERN = "/ws/**";
 	String APPEARED = "/appeared";
 	String REMOVED = "/removed";
+	String MOVED = "/moved";
 	String SELL = "/sell";
 	String BUY = "/buy";
 }

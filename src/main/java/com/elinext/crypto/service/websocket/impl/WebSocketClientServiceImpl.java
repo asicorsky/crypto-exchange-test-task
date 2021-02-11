@@ -5,7 +5,6 @@ import com.elinext.crypto.service.websocket.WebSocketClientService;
 import com.elinext.crypto.utils.HttpUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.WebSocketHttpHeaders;
@@ -26,7 +25,6 @@ public class WebSocketClientServiceImpl implements WebSocketClientService {
 	private final ObjectMapper objectMapper;
 
 	@Override
-	@SneakyThrows
 	public void connect() {
 
 		ApplicationProperties.Credentials credentials = applicationProperties.getCredentials();

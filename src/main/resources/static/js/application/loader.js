@@ -14,16 +14,23 @@ $(document).ready(function () {
                 stomp.subscribe("/appeared", function (data) {
                     let body = JSON.parse(data.body);
                     let tbody = $($(".loader[data-type=" + body.side + "] .loader-table tbody")[0]);
-                    let html = row(body);
-                    if (body.previousUid && body.previousUid.length > 0) {
-                        tbody.prepend(html);
+                    let currentRows = tbody.find("tr[data-uid=" + body.uid + "]");
+                    if (currentRows.length) {
+                        let currentRow = $(currentRows[0]);
+                        currentRow.find(".size").text(body.size);
+                        currentRow.find(".summary").text(body.summary);
                     } else {
-                        tbody.append(html);
+                        let html = row(body);
+                        if (body.previousUid && body.previousUid.length > 0) {
+                            tbody.find("tr[data-uid=" + body.previousUid + "]").after($(html));
+                        } else {
+                            tbody.prepend(html);
+                        }
                     }
                 });
                 stomp.subscribe("/removed", function (uid) {
                     $(".loader-table tr[data-uid=" + uid + "]").remove();
-                })
+                });
             });
         });
     });
@@ -42,9 +49,9 @@ function populate(type, views) {
 function row(view) {
 
     let html = "<tr data-uid=" + view.uid + ">";
-    html += "<td>" + view.price + "</td>";
-    html += "<td>" + view.size + "</td>"
-    html += "<td>" + view.summary + "</td>"
+    html += "<td class='price'>" + view.price + "</td>";
+    html += "<td class='size'>" + view.size + "</td>"
+    html += "<td class='summary'>" + view.summary + "</td>"
     html += "</tr>";
     return html;
 }

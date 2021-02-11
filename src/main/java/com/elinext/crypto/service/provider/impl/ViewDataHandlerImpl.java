@@ -78,15 +78,15 @@ public class ViewDataHandlerImpl implements ViewDataHandler {
 	private void operate(NavigableMap<BigDecimal, WebSocketViewDto> map, WebSocketChannelDataDto data) {
 
 		WebSocketViewDto view = calculate(map, data);
-		String putAfter = Optional.ofNullable(map.higherEntry(data.getPrice())).map(entry -> entry.getValue().getUid()).orElse(null);
+		String putAfter = Optional.ofNullable(map.lowerEntry(data.getPrice())).map(entry -> entry.getValue().getUid()).orElse(null);
 		view.setPreviousUid(putAfter);
 		if (map.size() == 51) {
 			BigDecimal last = map.lastKey();
 			WebSocketViewDto lastView = map.remove(last);
 			String uid = lastView.getUid();
 			if (!view.getUid().equals(uid)) {
-				webSocketServerService.appeared(view);
 				webSocketServerService.removed(uid);
+				webSocketServerService.appeared(view);
 			}
 		} else {
 			webSocketServerService.appeared(view);
