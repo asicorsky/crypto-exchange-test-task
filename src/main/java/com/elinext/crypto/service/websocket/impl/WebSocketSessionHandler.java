@@ -4,7 +4,7 @@ import com.elinext.crypto.dto.WebSocketChannelDto;
 import com.elinext.crypto.dto.WebSocketChannelType;
 import com.elinext.crypto.service.locator.SpringServiceLocator;
 import com.elinext.crypto.service.processors.WebSocketProcessor;
-import com.elinext.crypto.utils.WebSocketUtils;
+import com.elinext.crypto.utils.HttpUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ public class WebSocketSessionHandler extends AbstractWebSocketHandler {
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 
-		WebSocketChannelDto channel = WebSocketUtils.asChannel(message, objectMapper);
+		WebSocketChannelDto channel = HttpUtils.asWebSocketChannel(message, objectMapper);
 		WebSocketChannelType type = channel.getType();
 		WebSocketProcessor processor = serviceLocator.webSocketProcessor(type);
 		processor.process(channel);

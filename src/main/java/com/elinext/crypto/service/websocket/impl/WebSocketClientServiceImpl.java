@@ -2,7 +2,7 @@ package com.elinext.crypto.service.websocket.impl;
 
 import com.elinext.crypto.configuration.ApplicationProperties;
 import com.elinext.crypto.service.websocket.WebSocketClientService;
-import com.elinext.crypto.utils.WebSocketUtils;
+import com.elinext.crypto.utils.HttpUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -29,15 +29,16 @@ public class WebSocketClientServiceImpl implements WebSocketClientService {
 	@SneakyThrows
 	public void connect() {
 
+		ApplicationProperties.Credentials credentials = applicationProperties.getCredentials();
 		ApplicationProperties.WebSocket webSocket = applicationProperties.getWebSocket();
-		String apiKey = webSocket.getApiKey();
-		String apiSecret = webSocket.getApiSecret();
+		String apiKey = credentials.getApiKey();
+		String apiSecret = credentials.getApiSecret();
 		String connectionUrl = webSocket.getConnectionUrl();
-		WebSocketHttpHeaders headers = WebSocketUtils.subscribeHeaders(apiKey, apiSecret);
+		WebSocketHttpHeaders headers = HttpUtils.webSocketHeaders(apiKey, apiSecret);
 		var future = webSocketClient.doHandshake(sessionHandler, headers, URI.create(connectionUrl));
 		future.addCallback(session -> {
 			try {
-				Objects.requireNonNull(session).sendMessage(WebSocketUtils.subscribeMessage(objectMapper));
+				Objects.requireNonNull(session).sendMessage(HttpUtils.subscribeMessage(objectMapper));
 			} catch (IOException e) {
 				log.info("Exceptionally", e);
 			}

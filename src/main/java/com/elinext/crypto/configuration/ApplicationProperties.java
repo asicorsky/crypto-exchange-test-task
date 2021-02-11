@@ -11,15 +11,29 @@ import org.springframework.stereotype.Component;
 @Setter
 public class ApplicationProperties {
 
+	private Credentials credentials = new Credentials();
 	private WebSocket webSocket = new WebSocket();
+	private Rest rest = new Rest();
+
+	@Getter
+	@Setter
+	public static class Credentials {
+
+		private String apiKey;
+
+		private String apiSecret;
+	}
 
 	@Getter
 	@Setter
 	public static class WebSocket {
 
-		private String apiKey;
+		private String connectionUrl;
+	}
 
-		private String apiSecret;
+	@Getter
+	@Setter
+	public static class Rest {
 
 		private String connectionUrl;
 	}
