@@ -28,8 +28,8 @@ $(document).ready(function () {
                         }
                     }
                 });
-                stomp.subscribe("/removed", function (uid) {
-                    $(".loader-table tr[data-uid=" + uid + "]").remove();
+                stomp.subscribe("/removed", function (data) {
+                    $(".loader-table tr[data-uid=" + data.body + "]").remove();
                 });
             });
         });
