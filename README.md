@@ -10,7 +10,7 @@ Open command line, go to project root and execute "mvn clean install"
 ## Execute:
 Go to the target directory in command line which created after install and execute "java -Dapplication.credentials.api-key=$BSDEX_API_KEY -Dapplication.credentials.api-secret=$BSDEX_API_SECRET -jar crypto-exchange.jar".
 
-Also you can start it from IDE (ApplicationEntryPoint).
+Also you can start it from IDE (ApplicationEntryPoint main class).
 
 ## How it works:
 After application startup the system connected to required websocket channel and start to receive messages.
@@ -33,3 +33,6 @@ First task (with REST connection) also proceeds on project startup and show load
 5. WebFlux as REST client
 6. Apache utilities (for HMAC and IO)
 7. Bootstrap and jQuery for the GUI
+
+## NOTES
+Sometimes WS connection cannot be established because of external server problems. In this case need to restart application and check logs ("Application successfully subscribed to required websocket channel..." line should appear)
